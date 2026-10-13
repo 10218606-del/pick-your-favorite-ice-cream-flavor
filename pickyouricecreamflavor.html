@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<!-- This code was provided as starter code by my teacher. -->
+<html>
+  
+<head>
+   <!--The head section contains general information about the webpage.-->
+   <title>     </title>
+   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"> </script>
+   <style>
+       /*The style section controls how pieces of your webpage look.*/
+   </style>
+</head>
+
+
+<body>
+   <!--The body section contains the content of your webpage.-->
+   <header>
+       <h2> Ice cream stats    </h2>
+   </header>
+   <div x-data="webApp"><!--Bug solved with the use of gemini-->
+    <span class="section-title"> Dropdown Menu</span>
+   <!-- @change can be used with dropdown menus. -->
+    <select x-model="dropdownVal">
+    <option value="">-- Select --</option>
+    <option value="Vanilla">Vanilla</option>
+    <option value="Chocolate">Chocolate</option>
+    <option value="Strawberry">Strawberry</option>
+    <option value="Mint Chip">Mint Chocolate Chip</option>
+    </select>
+
+    <p>Favorite ice cream flaver : <span x-text="dropdownVal"></span></p>
+   
+    <!--Displays percentages for selected flavor-->
+    </P>The peresentge of people who like it  : <span x-text="percentages[dropdownVal]"></span></p>
+    </div>
+   <footer>
+       <p>© 2026-2027<br>
+       AP Computer Science Principles<br>
+       George Washington High School made by Kareem fares </p>
+   </footer>
+  
+   <script>
+       //The script section contains the JavaScript logic
+       document.addEventListener('alpine:init', () => {
+           Alpine.data('webApp', () => ({
+            dropdownVal: '',
+               
+            percentages:{     <!--This is a list holding all the percentages-->
+            'Vanilla': '59%',
+            'Chocolate': '51%',
+            'Strawberry': '43%',
+            'Mint Chip' : '33%'
+            }
+           }));
+       });
+   </script>
+</body>
+</html>
