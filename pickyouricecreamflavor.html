@@ -73,13 +73,41 @@
            cursor: pointer;
            transition: border-color 0.2s, box-shadow 0.2s;
        }
+       button {
+           width: 100%;
+           padding: 0.75rem 1rem;
+           font-size: 1rem;
+           font-weight: 600;
+           color: #ffffff;
+           background-color: #2563eb;
+           border: none;
+           border-radius: 8px;
+           cursor: pointer;
+           margin-bottom: 1.5rem;
+           transition: background-color 0.2s;
+       }
+
+       button:hover {
+           background-color: #1d4ed8;
+       }
 
        select:focus {
            border-color: #2563eb;
            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
            background-color: #ffffff;
        }
-
+        /* Red error banner style */
+       .error-banner {
+          background-color: #fef2f2;
+          color: #dc2626;
+          border: 1px solid #fecaca;
+          padding: 0.75rem;
+          border-radius: 8px;
+          font-size: 0.875rem;
+          font-weight: 600;
+          text-align: center;
+          margin-bottom: 1rem;
+       }
        p {
            font-size: 1rem;
            color: #334155;
@@ -100,18 +128,18 @@
            line-height: 1.6;
        }
    </style>
-</head> <!--Gemini help with doing the UI-->
+</head> <!--Gemini helped with doing the UI-->
 
 
 <body>
    <!--The body section contains the content of your webpage.-->
    <header>
-       <h2> Ice cream stats    </h2>
+       <h2> Ice cream stats    </h2> <!--title -->
    </header>
    <div x-data="webApp"><!--Bug solved with the use of gemini-->
     <span class="section-title"> Dropdown Menu</span>
    <!-- @change can be used with dropdown menus. -->
-    <select x-model="dropdownVal">
+    <select x-model="dropdownVal" @change="submitted = false">
     <option value="">-- Select --</option>
     <option value="Vanilla">Vanilla</option>
     <option value="Chocolate">Chocolate</option>
@@ -119,10 +147,20 @@
     <option value="Mint Chip">Mint Chocolate Chip</option>
     </select>
 
-    <p>Favorite ice cream flaver : <span x-text="dropdownVal"></span></p>
-   
-    <!--Displays percentages for selected flavor-->
-    </P>The peresentge of people who like it  : <span x-text="percentages[dropdownVal]"></span></p>
+    
+    <!--submit function --> 
+    <button @click="submitChoice()">submit choice </button>
+
+    <!-- On-screen error message shown if no selection was made -->
+      <div x-show="showError" class="error-banner">
+      ⚠️ Please select an ice cream flavor first!
+      </div>
+  
+    <!--revels the ruslts after pressed--><!--BUG Gemini helped -->
+    <div x-show="submitted"style="border-top: 1px solid #e2e8f0; padding-top: 0.5rem;">
+      <p>Favorite ice cream flavor : <span x-text="dropdownVal"></span></p>
+     <p>The percentage of people who like it : <span x-text="percentages[dropdownVal]"></span></p>
+      </div>
     </div>
    <footer>
        <p>© 2026-2027<br>
@@ -135,7 +173,19 @@
        document.addEventListener('alpine:init', () => {
            Alpine.data('webApp', () => ({
             dropdownVal: '',
-               
+            submitted: false,
+            showError: false, 
+
+            submitChoice() {
+            if (this.dropdownVal !== '') {
+           this.submitted = true;
+           this.showError = false; 
+           } else {
+            this.showError = true;  <!--error banner Showon screen-->  
+            this.submitted = false;
+           }
+          },
+
             percentages:{     <!--This is a list holding all the percentages-->
             'Vanilla': '59%',
             'Chocolate': '51%',
